@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
     Property senderConf;
     senderConf.put("device","portaudio");
     senderConf.put("read", "");
-    senderConf.put("samples", 11025*rec_seconds);
+    senderConf.put("samples", 4096*rec_seconds);
 //    senderConf.put("samples", 44100*rec_seconds);
 //    senderConf.put("rate", 16000);
     senderConf.put("rate", 11025);
