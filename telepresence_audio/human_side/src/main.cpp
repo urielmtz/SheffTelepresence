@@ -17,6 +17,8 @@ using namespace yarp::sig;
 using namespace yarp::dev;
 
 const int rec_seconds = 1;
+const int sample_block = 2048;
+const int sample_rate = 6000;
 
 int main(int argc, char *argv[])
 {
@@ -34,10 +36,10 @@ int main(int argc, char *argv[])
     Property senderConf;
     senderConf.put("device","portaudio");
     senderConf.put("read", "");
-    senderConf.put("samples", 4096*rec_seconds);
+    senderConf.put("samples", sample_block*rec_seconds);
 //    senderConf.put("samples", 44100*rec_seconds);
 //    senderConf.put("rate", 16000);
-    senderConf.put("rate", 11025);
+    senderConf.put("rate", sample_rate);
     PolyDriver senderPoly(senderConf);
     IAudioGrabberSound *get;
     // Make sure we can read sound
