@@ -18,7 +18,7 @@ using namespace yarp::dev;
 
 const int rec_seconds = 1;
 const int sample_block = 2048;
-const int sample_rate = 6000;
+const int sample_rate = 8000;
 
 int main(int argc, char *argv[])
 {
@@ -55,7 +55,7 @@ int main(int argc, char *argv[])
     // Receiver: Get an audio write device.
     Property receiverConf;
     receiverConf.put("device","portaudio");
-    receiverConf.put("samples", "4096");
+    receiverConf.put("samples", sample_block);
 //    conf.put("samples", "8192");
     receiverConf.put("write", "1");
     PolyDriver receiverPoly(receiverConf);

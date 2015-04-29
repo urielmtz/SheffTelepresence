@@ -54,7 +54,7 @@ int main(int argc, char *argv[])
     // Receiver: Get an audio write device.
     Property receiverConf;
     receiverConf.put("device","portaudio");
-    receiverConf.put("samples", "4096");
+    receiverConf.put("samples", sample_block);
 //    conf.put("samples", "8192");
     receiverConf.put("write", "1");
     PolyDriver receiverPoly(receiverConf);
