@@ -1,0 +1,16 @@
+<application>
+	<name>Telepresence_Human</name>
+	<module>
+		<name>telepresenceHuman</name>
+		<parameters></parameters>
+        <node>tele</node>
+        <stdio></stdio>
+	</module>
+
+	<connection>
+		<from>/telepresence/human:o</from>
+		<to>/telepresence/robot:i</to>
+		<protocol>tcp</protocol>
+ 	</connection>
+
+</application>
