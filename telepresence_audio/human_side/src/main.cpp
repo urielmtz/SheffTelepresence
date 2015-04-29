@@ -17,7 +17,7 @@ using namespace yarp::sig;
 using namespace yarp::dev;
 
 const int rec_seconds = 1;
-const int sample_block = 2048;
+const int sample_block = 4096;
 const int sample_rate = 8000;
 
 int main(int argc, char *argv[])
