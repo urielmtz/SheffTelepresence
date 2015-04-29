@@ -20,5 +20,5 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include ${ICUB_INCLUDE_DIRS} ${Y
 add_executable(${PROJECTNAME} ${folder_source} ${folder_header})
 
 target_link_libraries(${PROJECTNAME} icubmod yarpmod ${YARP_LIBRARIES})
-install(TARGETS ${PROJECTNAME} DESTINATION ${YARP_DIR}/bin)
+install(TARGETS ${PROJECTNAME} DESTINATION bin)
 

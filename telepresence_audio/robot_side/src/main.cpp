@@ -1,6 +1,6 @@
 /*
 * Copyright: (C) 2015 Sheffield Robotics
-* Authors: Uriel Martinez
+* Authors: Uriel Martinez, Luke Boorman
 * CopyPolicy: Released under the terms of the LGPLv2.1 or later, see LGPL.TXT
 */
 
@@ -17,7 +17,7 @@ using namespace yarp::sig;
 using namespace yarp::dev;
 
 const int rec_seconds = 1;
-const int sample_block = 4096;
+const int sample_block = 8192;
 const int sample_rate = 8000;
 
 int main(int argc, char *argv[])
@@ -29,8 +29,6 @@ int main(int argc, char *argv[])
 
     senderPort.open("/telepresence/robot:o");
     receiverPort.open("/telepresence/robot:i");
-
-//    Network::connect("/sender", "/receiver");
 
     // Sender: Get a portaudio read device.
     Property senderConf;
@@ -54,7 +52,7 @@ int main(int argc, char *argv[])
     // Receiver: Get an audio write device.
     Property receiverConf;
     receiverConf.put("device","portaudio");
-    receiverConf.put("samples", sample_block);
+    receiverConf.put("samples", sample_rate);
 //    conf.put("samples", "8192");
     receiverConf.put("write", "1");
     PolyDriver receiverPoly(receiverConf);

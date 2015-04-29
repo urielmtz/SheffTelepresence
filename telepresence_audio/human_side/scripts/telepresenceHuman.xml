@@ -3,7 +3,7 @@
 	<module>
 		<name>telepresenceHuman</name>
 		<parameters></parameters>
-        <node>tele</node>
+        <node>icubsrv</node>
         <stdio></stdio>
 	</module>
 
