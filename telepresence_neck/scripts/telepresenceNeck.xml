@@ -1,0 +1,22 @@
+<application>
+	<name>Telepresence_Neck</name>
+	<module>
+		<name>telepresenceNeck</name>
+		<parameters></parameters>
+        <node>icubsrv</node>
+        <stdio></stdio>
+	</module>
+
+	<connection>
+		<from>/telepresence/neck:o</from>
+		<to>/iKinGazeCtrl/angles:i</to>
+		<protocol>tcp</protocol>
+ 	</connection>
+
+	<connection>
+		<from>/telepresence/neckconf:o</from>
+		<to>/iKinGazeCtrl/rpc</to>
+		<protocol>tcp</protocol>
+ 	</connection>
+
+</application>
