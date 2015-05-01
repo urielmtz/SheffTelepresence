@@ -4,7 +4,7 @@
 
 cmake_minimum_required(VERSION 2.8)
 
-set(PROJECTNAME telepresence_vision)
+set(PROJECTNAME telepresenceVision)
 project(${PROJECTNAME})
 
 find_package(ICUB)
