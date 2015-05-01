@@ -1,0 +1,22 @@
+<application>
+	<name>Telepresence_Vision</name>
+	<module>
+		<name>telepresenceVision</name>
+		<parameters></parameters>
+        <node>icubsrv</node>
+        <stdio></stdio>
+	</module>
+
+	<connection>
+		<from>/icub/cam/left</from>
+		<to>/telepresence/leftEye:i</to>
+		<protocol>tcp</protocol>
+ 	</connection>
+
+	<connection>
+		<from>/icub/cam/right</from>
+		<to>/telepresence/rightEye:i</to>
+		<protocol>tcp</protocol>
+ 	</connection>
+
+</application>
