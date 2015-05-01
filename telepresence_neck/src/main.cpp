@@ -115,7 +115,7 @@ class OculusModule: public RFModule
             Network::disconnect("/telepresence/neckconf:o","/iKinGazeCtrl/rpc");
 
             // Do something with the HMD.
-            ovrHmd_Destroy(hmd);
+            //ovrHmd_Destroy(hmd);
             ovr_Shutdown();
 
 			output.close();
