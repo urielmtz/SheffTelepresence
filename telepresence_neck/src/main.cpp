@@ -28,10 +28,8 @@ class OculusModule: public RFModule
         bool OculusDeviceReady;
 
 		BufferedPort<Bottle> output;
-		BufferedPort<Bottle> confOutput;
 
 		int nsample;
-
         float yaw;
         float eyePitch;
         float eyeRoll;
@@ -82,7 +80,6 @@ class OculusModule: public RFModule
                     bot.addDouble(eyePitch*180);	// (x) pitch in oculus which is y in icub
                     bot.addDouble(0);
                     output.write();
-                    // printf("Sent message: %s\n", bot.toString().c_str());
                 }
             }
 
@@ -92,27 +89,13 @@ class OculusModule: public RFModule
         bool configure(ResourceFinder &)
         {
 			output.open("/telepresence/neck:o");
-			confOutput.open("/telepresence/neckconf:o");
 			
-            while( !Network::isConnected("/telepresence/neckconf:o","/gtw/telepresence/neckconf:i") )
-            {}
-
-		    Bottle &bot = confOutput.prepare();
-            bot.clear();
-		    bot.addString("bind");
-		    bot.addString("roll");
-		    bot.addDouble(-0.01);
-		    bot.addDouble(0.01);
-		    confOutput.write();
-		    printf("Sent message: %s\n", bot.toString().c_str());
-
             return true;
         }
 
         bool interruptModule()
         {
             Network::disconnect("/telepresence/neck:o","/gtw/telepresence/neck:o");
-            Network::disconnect("/telepresence/neckconf:o","/gtw/telepresence/neckconf:o");
 
             // Do something with the HMD.
             //ovrHmd_Destroy(hmd);
