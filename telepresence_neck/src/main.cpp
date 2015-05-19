@@ -27,8 +27,8 @@ class OculusModule: public RFModule
         ovrHmd hmd;
         bool OculusDeviceReady;
 
-		Port output;
-		Port confOutput;
+		BufferedPort<Bottle> output;
+		BufferedPort<Bottle> confOutput;
 
 		int nsample;
 
@@ -75,12 +75,13 @@ class OculusModule: public RFModule
                     cout << "POSE Euler [yaw,pitch,roll]: " << yaw << " " << eyePitch << " " << eyeRoll << endl;
 
                     nsample = 0;
-                    Bottle bot;
+                    Bottle &bot = output.prepare();
+                    bot.clear();
                     bot.addString("abs");
                     bot.addDouble(yaw*-180);		// (y) yaw in oculus which is x in icub
                     bot.addDouble(eyePitch*180);	// (x) pitch in oculus which is y in icub
                     bot.addDouble(0);
-                    output.write(bot);
+                    output.write();
                     // printf("Sent message: %s\n", bot.toString().c_str());
                 }
             }
@@ -93,17 +94,16 @@ class OculusModule: public RFModule
 			output.open("/telepresence/neck:o");
 			confOutput.open("/telepresence/neckconf:o");
 			
-		    // Network::connect("/telepresence/neck:o","/iKinGazeCtrl/angles:i");
+            while( !Network::isConnected("/telepresence/neckconf:o","/gtw/telepresence/neckconf:i") )
+            {}
 
-            while( !Network::isConnected("/telepresence/neckconf:o","/iKinGazeCtrl/rpc") )
-    		    Network::connect("/telepresence/neckconf:o","/iKinGazeCtrl/rpc");
-
-		    Bottle bot;
+		    Bottle &bot = confOutput.prepare();
+            bot.clear();
 		    bot.addString("bind");
 		    bot.addString("roll");
 		    bot.addDouble(-0.01);
 		    bot.addDouble(0.01);
-		    confOutput.write(bot);
+		    confOutput.write();
 		    printf("Sent message: %s\n", bot.toString().c_str());
 
             return true;
@@ -111,8 +111,8 @@ class OculusModule: public RFModule
 
         bool interruptModule()
         {
-            Network::disconnect("/telepresence/neck:o","/iKinGazeCtrl/angles:i");
-            Network::disconnect("/telepresence/neckconf:o","/iKinGazeCtrl/rpc");
+            Network::disconnect("/telepresence/neck:o","/gtw/telepresence/neck:o");
+            Network::disconnect("/telepresence/neckconf:o","/gtw/telepresence/neckconf:o");
 
             // Do something with the HMD.
             //ovrHmd_Destroy(hmd);

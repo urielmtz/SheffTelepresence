@@ -9,13 +9,13 @@
 
 	<connection>
 		<from>/telepresence/neck:o</from>
-		<to>/iKinGazeCtrl/angles:i</to>
+		<to>/gtw/telepresence/neck:i</to>
 		<protocol>tcp</protocol>
  	</connection>
 
 	<connection>
 		<from>/telepresence/neckconf:o</from>
-		<to>/iKinGazeCtrl/rpc</to>
+		<to>/gtw/telepresence/neckconf:i</to>
 		<protocol>tcp</protocol>
  	</connection>
 
