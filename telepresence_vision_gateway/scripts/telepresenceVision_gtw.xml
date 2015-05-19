@@ -1,0 +1,26 @@
+<!--
+	Copyright: (C) 2015 Sheffield Robotics
+	Authors: Uriel Martinez
+	CopyPolicy: Released under the terms of the LGPLv2.1 or later, see LGPL.TXT
+//-->
+
+<application>
+	<name>Telepresence_Vision_GTW</name>
+	<module>
+		<name>telepresenceVision_gtw</name>
+		<parameters></parameters>
+        <node>localhost</node>
+        <stdio></stdio>
+	</module>
+
+	<connection>
+		<from>/icub/cam/left</from>
+		<to>/gtw/telepresence/leftEye:i</to>
+		<protocol>tcp</protocol>
+ 	</connection>
+	<connection>
+		<from>/icub/cam/right</from>
+		<to>/gtw/telepresence/rightEye:i</to>
+		<protocol>tcp</protocol>
+ 	</connection>
+</application>
