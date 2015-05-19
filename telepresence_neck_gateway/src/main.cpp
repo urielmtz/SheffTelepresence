@@ -57,7 +57,7 @@ class TelepresenceNeck_gtw: public RFModule
             gtw_contactNeckConfOutputPort = gtw_contactNeckConfOutputPort.addName("/gtw/telepresence/neckconf:o");
             gtw_contactNeckConfOutputPort = gtw_contactNeckConfOutputPort.addCarrier("tcp");
             gtw_contactNeckConfOutputPort = gtw_contactNeckConfOutputPort.addHost(ip_address);
-            gtw_contactNeckConfOutputPort = gtw_contactNeckConfOutputPort.addPort(60003);
+            gtw_contactNeckConfOutputPort = gtw_contactNeckConfOutputPort.addPort(60002);
 
             Network::registerContact(gtw_contactNeckInputPort);
             Network::registerContact(gtw_contactNeckOutputPort);
