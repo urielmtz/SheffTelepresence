@@ -1,0 +1,27 @@
+<!--
+	Copyright: (C) 2015 Sheffield Robotics
+	Authors: Uriel Martinez
+	CopyPolicy: Released under the terms of the LGPLv2.1 or later, see LGPL.TXT
+//-->
+
+<application>
+	<name>Telepresence_Neck_GTW</name>
+	<module>
+		<name>telepresenceNeck_gtw</name>
+		<parameters></parameters>
+        <node>localhost</node>
+        <stdio></stdio>
+	</module>
+
+	<connection>
+		<from>/gtw/telepresence/neck:o</from>
+		<to>/iKinGazeCtrl/angles:i</to>
+		<protocol>tcp</protocol>
+ 	</connection>
+	<connection>
+		<from>/gtw/telepresence/neckconf:o</from>
+		<to>/iKinGazeCtrl/rpc</to>
+		<protocol>tcp</protocol>
+ 	</connection>
+
+</application>
