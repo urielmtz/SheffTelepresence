@@ -26,17 +26,17 @@ int main()
 
     gtw_contactNeckInputPort = gtw_contactNeckInputPort.addName("/gtw/telepresence/neck:i");
     gtw_contactNeckInputPort = gtw_contactNeckInputPort.addCarrier("tcp");
-    gtw_contactNeckInputPort = gtw_contactNeckInputPort.addHost("143.167.51.234");
+    gtw_contactNeckInputPort = gtw_contactNeckInputPort.addHost("143.167.49.238");
     gtw_contactNeckInputPort = gtw_contactNeckInputPort.addPort(60000);
 
     gtw_contactNeckOutputPort = gtw_contactNeckOutputPort.addName("/gtw/telepresence/neck:o");
     gtw_contactNeckOutputPort = gtw_contactNeckOutputPort.addCarrier("tcp");
-    gtw_contactNeckOutputPort = gtw_contactNeckOutputPort.addHost("143.167.51.234");
+    gtw_contactNeckOutputPort = gtw_contactNeckOutputPort.addHost("143.167.49.238");
     gtw_contactNeckOutputPort = gtw_contactNeckOutputPort.addPort(60001);
 
     gtw_contactNeckConfOutputPort = gtw_contactNeckConfOutputPort.addName("/gtw/telepresence/neckconf:o");
     gtw_contactNeckConfOutputPort = gtw_contactNeckConfOutputPort.addCarrier("tcp");
-    gtw_contactNeckConfOutputPort = gtw_contactNeckConfOutputPort.addHost("143.167.51.234");
+    gtw_contactNeckConfOutputPort = gtw_contactNeckConfOutputPort.addHost("143.167.49.238");
     gtw_contactNeckConfOutputPort = gtw_contactNeckConfOutputPort.addPort(60003);
 
     Network::registerContact(gtw_contactNeckInputPort);

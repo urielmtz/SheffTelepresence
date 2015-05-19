@@ -4,6 +4,7 @@
 * CopyPolicy: Released under the terms of the LGPLv2.1 or later, see LGPL.TXT
 */
 
+#include <iostream>
 #include <stdio.h>
 #include <cv.h>
 #include <highgui.h>
@@ -27,6 +28,7 @@
 #include <OVR_CAPI_GL.h>
 #include <CAPI/CAPI_HSWDisplay.h>
 
+using namespace std;
 using namespace yarp::os;
 using namespace yarp::sig;
 
@@ -96,14 +98,12 @@ int main()
     leftImagePort.open("/telepresence/leftEye:i"); // give the port a name
     rightImagePort.open("/telepresence/rightEye:i"); // give the port a name
 
-/*    if( !Network::connect("/icub/cam/left","/telepresence/leftEye:i") || !Network::connect("/icub/cam/right","/telepresence/rightEye:i"))
-	{
-		printf("ERROR Connection");
-		return -1;
-	}
-	else
-		printf("Connection ready!");
-*/
+    cout << "Waiting for connections: /gtw/telepresence/leftEye:o to /telepresence/leftEye:i   and   /gtw/telepresence/rightEye:o to /telepresence/rightEye:i" << endl;
+    while( !Network::connect("/gtw/telepresence/leftEye:o","/telepresence/leftEye:i") || !Network::connect("/gtw/telepresence/rightEye:o","/telepresence/rightEye:i"))
+	{}
+
+    cout << "Connections ready: /gtw/telepresence/leftEye:o to /telepresence/leftEye:i   and   /gtw/telepresence/rightEye:o to /telepresence/rightEye:i" << endl;
+
     if(init() == -1)
     {
         return 1;
@@ -319,7 +319,6 @@ void display(void)
     int i;
     ovrMatrix4f proj;
     ovrPosef pose[2];
-    float rot_mat[16];
 
     /* the drawing starts with a call to ovrHmd_BeginFrame */
     ovrHmd_BeginFrame(hmd, 0);
@@ -415,7 +414,6 @@ void draw_scene(int eye_id)
 {
     int i;
     float grey[] = {0.8, 0.8, 0.8, 1};
-    float col[] = {0, 0, 0, 1};
     float lpos[][4] = {{-8, 2, 10, 1},{0, 15, 0, 1}};
     float lcol[][4] = {{0.8, 0.8, 0.8, 1},{0.4, 0.3, 0.3, 1}};
 

@@ -1,3 +1,9 @@
+<!--
+	Copyright: (C) 2015 Sheffield Robotics
+	Authors: Uriel Martinez
+	CopyPolicy: Released under the terms of the LGPLv2.1 or later, see LGPL.TXT
+//-->
+
 <application>
 	<name>Telepresence_Vision</name>
 	<module>
@@ -8,13 +14,13 @@
 	</module>
 
 	<connection>
-		<from>/icub/cam/left</from>
+		<from>/gtw/telepresence/leftEye:o</from>
 		<to>/telepresence/leftEye:i</to>
 		<protocol>tcp</protocol>
  	</connection>
 
 	<connection>
-		<from>/icub/cam/right</from>
+		<from>/gtw/telepresence/rightEye:o</from>
 		<to>/telepresence/rightEye:i</to>
 		<protocol>tcp</protocol>
  	</connection>
