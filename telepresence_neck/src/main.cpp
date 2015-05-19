@@ -86,7 +86,7 @@ class OculusModule: public RFModule
             return true;
         }
 
-        bool configure(ResourceFinder &)
+        bool configure(ResourceFinder &rf)
         {
 			output.open("/telepresence/neck:o");
 			
