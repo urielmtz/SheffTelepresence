@@ -35,12 +35,16 @@ class OculusModule: public RFModule
         float eyeRoll;
         float wParam;
 
+        float calibrationValue;
+        bool calibrate;
     public:
         OculusModule()
         {
             OculusDeviceReady = false;
             cout << "Running OculusModule" << endl;
 			nsample = 0;
+            calibrationValue = 0.0;
+            calibrate = false;
         }
 
         ~OculusModule(){}
@@ -63,7 +67,17 @@ class OculusModule: public RFModule
                 {
                     ovrPosef pose = ts.HeadPose.ThePose;
                     // pose.Orientation.GetEurlerAngles<Axis_Y, Aixs_X, Axis_Z>(&yaw, &eyePitch, &eyeRoll);
-                    yaw = pose.Orientation.y;
+
+
+                    if( !calibrate )
+                    {
+                        calibrationValue = pose.Orientation.y;
+                        calibrate= true;
+                    }
+
+
+                    // yaw = pose.Orientation.y;
+                    yaw = pose.Orientation.y - calibrationValue;    // this calibration needs to be improved
                     eyePitch = pose.Orientation.x;
                     eyeRoll = pose.Orientation.z;
                     wParam = pose.Orientation.w;
