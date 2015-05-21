@@ -79,11 +79,11 @@ class TelepresenceVision_gtw: public RFModule
             gtw_rightImageOutputPort.open(gtw_rightEyeOutput, true); // give the port a name
 
 
-            cout << "Waiting for connections: /icub/cam/left to /gtw/telepresence/leftEye:i   and   /icub/cam/right to /gtw/telepresence/rightEye:i" << endl;
-            while( !Network::isConnected("/icub/cam/left", "/gtw/telepresence/leftEye:i") || !Network::isConnected("/icub/cam/right", "/gtw/telepresence/rightEye:i") )
+            cout << "Waiting for connections: mjpeg://icub/cam/left to /gtw/telepresence/leftEye:i   and   mjpeg://icub/cam/right to /gtw/telepresence/rightEye:i" << endl;
+            while( !Network::isConnected("mjpeg://icub/cam/left", "/gtw/telepresence/leftEye:i") || !Network::isConnected("mjpeg://icub/cam/right", "/gtw/telepresence/rightEye:i") )
             {}
 
-            cout << "Connections ready: /icub/cam/left to /gtw/telepresence/leftEye:i   and   /icub/cam/right to /gtw/telepresence/rightEye:i" << endl;
+            cout << "Connections ready: mjpeg://icub/cam/left to /gtw/telepresence/leftEye:i   and   mjpeg://icub/cam/right to /gtw/telepresence/rightEye:i" << endl;
 
             return true;
         }

@@ -9,7 +9,7 @@
 	<module>
 		<name>telepresenceVision</name>
 		<parameters></parameters>
-        <node>icubsrv</node>
+        <node>localhost</node>
         <stdio></stdio>
 	</module>
 

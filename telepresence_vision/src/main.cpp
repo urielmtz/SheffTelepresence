@@ -99,7 +99,7 @@ int main()
     rightImagePort.open("/telepresence/rightEye:i"); // give the port a name
 
     cout << "Waiting for connections: /gtw/telepresence/leftEye:o to /telepresence/leftEye:i   and   /gtw/telepresence/rightEye:o to /telepresence/rightEye:i" << endl;
-    while( !Network::connect("/gtw/telepresence/leftEye:o","/telepresence/leftEye:i") || !Network::connect("/gtw/telepresence/rightEye:o","/telepresence/rightEye:i"))
+    while( !Network::connect("mjpeg://gtw/telepresence/leftEye:o","/telepresence/leftEye:i") || !Network::connect("mjpeg://gtw/telepresence/rightEye:o","/telepresence/rightEye:i"))
 	{}
 
     cout << "Connections ready: /gtw/telepresence/leftEye:o to /telepresence/leftEye:i   and   /gtw/telepresence/rightEye:o to /telepresence/rightEye:i" << endl;
