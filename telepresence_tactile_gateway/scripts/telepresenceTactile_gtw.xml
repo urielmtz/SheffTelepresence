@@ -1,0 +1,27 @@
+<!--
+	Copyright: (C) 2015 Sheffield Robotics
+	Authors: Uriel Martinez
+	CopyPolicy: Released under the terms of the LGPLv2.1 or later, see LGPL.TXT
+//-->
+
+<application>
+	<name>Telepresence_Tactile_GTW</name>
+	<module>
+		<name>telepresenceTactile_gtw</name>
+		<parameters></parameters>
+        <node>localhost</node>
+        <stdio></stdio>
+	</module>
+
+	<connection>
+		<from>/icub/skin/left_hand_comp</from>
+		<to>/gtw/telepresence/tactile/left:i</to>
+		<protocol>tcp</protocol>
+ 	</connection>
+	<connection>
+		<from>/icub/skin/left_hand_comp</from>
+		<to>/gtw/telepresence/tactile/right:i</to>
+		<protocol>tcp</protocol>
+ 	</connection>
+
+</application>
