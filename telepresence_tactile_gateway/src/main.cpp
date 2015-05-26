@@ -48,22 +48,22 @@ class TelepresenceNeck_gtw: public RFModule
             gtw_contactTactileLeftInputPort = gtw_contactTactileLeftInputPort.addName("/gtw/telepresence/tactile/left:i");
             gtw_contactTactileLeftInputPort = gtw_contactTactileLeftInputPort.addCarrier("tcp");
             gtw_contactTactileLeftInputPort = gtw_contactTactileLeftInputPort.addHost(ip_address);
-            gtw_contactTactileLeftInputPort = gtw_contactTactileLeftInputPort.addPort(70000);
+            gtw_contactTactileLeftInputPort = gtw_contactTactileLeftInputPort.addPort(80005);
 
             gtw_contactTactileRightInputPort = gtw_contactTactileRightInputPort.addName("/gtw/telepresence/tactile/right:i");
             gtw_contactTactileRightInputPort = gtw_contactTactileRightInputPort.addCarrier("tcp");
             gtw_contactTactileRightInputPort = gtw_contactTactileRightInputPort.addHost(ip_address);
-            gtw_contactTactileRightInputPort = gtw_contactTactileRightInputPort.addPort(70001);
+            gtw_contactTactileRightInputPort = gtw_contactTactileRightInputPort.addPort(80006);
 
             gtw_contactTactileLeftOutputPort = gtw_contactTactileLeftOutputPort.addName("/gtw/telepresence/tactile/left:o");
             gtw_contactTactileLeftOutputPort = gtw_contactTactileLeftOutputPort.addCarrier("tcp");
             gtw_contactTactileLeftOutputPort = gtw_contactTactileLeftOutputPort.addHost(ip_address);
-            gtw_contactTactileLeftOutputPort = gtw_contactTactileLeftOutputPort.addPort(70002);
+            gtw_contactTactileLeftOutputPort = gtw_contactTactileLeftOutputPort.addPort(80007);
 
             gtw_contactTactileRightOutputPort = gtw_contactTactileRightOutputPort.addName("/gtw/telepresence/tactile/right:o");
             gtw_contactTactileRightOutputPort = gtw_contactTactileRightOutputPort.addCarrier("tcp");
             gtw_contactTactileRightOutputPort = gtw_contactTactileRightOutputPort.addHost(ip_address);
-            gtw_contactTactileRightOutputPort = gtw_contactTactileRightOutputPort.addPort(70003);
+            gtw_contactTactileRightOutputPort = gtw_contactTactileRightOutputPort.addPort(80008);
 
 
             Network::registerContact(gtw_contactTactileLeftInputPort);
