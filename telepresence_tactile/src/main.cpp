@@ -96,7 +96,7 @@ class TactileModule: public RFModule
 
             taxelsPerHand = 6;
             numOfHands = 2;
-            normalizer = 12;
+            normalizer = 2;  // normalizer values has to be improved
 
             left_values = new double[taxelsPerHand];
             right_values = new double[taxelsPerHand];
