@@ -106,13 +106,13 @@ class TactileModule: public RFModule
             taxelsRanges[0][2] = 24;
             taxelsRanges[0][3] = 36;
             taxelsRanges[0][4] = 48;
-            taxelsRanges[0][5] = 60;
+            taxelsRanges[0][5] = 92;
             taxelsRanges[1][0] = 11;
             taxelsRanges[1][1] = 23;
             taxelsRanges[1][2] = 35;
             taxelsRanges[1][3] = 47;
             taxelsRanges[1][4] = 59;
-            taxelsRanges[1][5] = 72;
+            taxelsRanges[1][5] = 139;
 
             return true;
         }
@@ -123,6 +123,9 @@ class TactileModule: public RFModule
 
             Network::disconnect("/gtw/telepresence/tactile/left:o", "/telepresence/tactile/left:i");
             Network::disconnect("/gtw/telepresence/tactile/right:o", "/telepresence/tactile/right:i");
+
+            leftSensorValues.close();  // give the port a name
+            rightSensorValues.close();  // give the port a name
 
             myTxzy->closePort();
 
