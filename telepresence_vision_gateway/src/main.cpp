@@ -40,7 +40,7 @@ class TelepresenceVision_gtw: public RFModule
             Property config;
             config.fromConfigFile(rf.getContext() + "config.ini");
 //            config.fromConfigFile(rf.findFile("from").c_str());
-            
+
             Bottle &bGeneral = config.findGroup("host_computer");
 
             ip_address = bGeneral.find("ip_address").asString().c_str();
@@ -139,9 +139,9 @@ int main( int argc, char **argv )
     ResourceFinder rf;
 
     rf.setVerbose(true);
-    rf.setDefaultContext("/home/uriel/Packages/SheffTelepresence/telepresence_vision_gateway/conf/");
+    rf.setDefaultContext("/home/icub/SheffTelepresence/telepresence_vision_gateway/conf/");
     rf.setDefaultConfigFile("config.ini");
-    rf.configure(argc,argv);
+    rf.configure("SHEFFTELEPRESENCE_ROOT",argc,argv);
 
     TelepresenceVision_gtw mod;
 

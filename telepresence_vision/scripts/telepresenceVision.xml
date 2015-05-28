@@ -7,6 +7,12 @@
 <application>
 	<name>Telepresence_Vision</name>
 	<module>
+		<name>oculusd</name>
+		<parameters></parameters>
+        <node>localhost</node>
+        <stdio></stdio>
+	</module>
+	<module>
 		<name>telepresenceVision</name>
 		<parameters></parameters>
         <node>localhost</node>
@@ -16,13 +22,13 @@
 	<connection>
 		<from>/gtw/telepresence/leftEye:o</from>
 		<to>/telepresence/leftEye:i</to>
-		<protocol>tcp</protocol>
+		<protocol>tcp+mjpeg</protocol>
  	</connection>
 
 	<connection>
 		<from>/gtw/telepresence/rightEye:o</from>
 		<to>/telepresence/rightEye:i</to>
-		<protocol>tcp</protocol>
+		<protocol>tcp+mjpeg</protocol>
  	</connection>
 
 </application>

@@ -65,19 +65,10 @@ int key_event(int key, int state);
 void reshape(int x, int y);
 void toggle_hmd_fullscreen(void);
 
+GLuint texture;
 
-IplImage* img_resize(IplImage* src_img, int new_width,int new_height)
+void InitializeIplToTexture(GLubyte *image)
 {
-    IplImage* des_img;
-    des_img=cvCreateImage(cvSize(new_width,new_height),src_img->depth,src_img->nChannels);
-    cvResize(src_img,des_img,CV_INTER_LINEAR);
-    return des_img;
-}
-
-
-GLuint ConvertIplToTexture(IplImage *image)
-{
-  GLuint texture;
 
   glGenTextures(1,&texture);
   glBindTexture(GL_TEXTURE_2D,texture);
@@ -86,9 +77,14 @@ GLuint ConvertIplToTexture(IplImage *image)
   glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
   glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_REPEAT);
   glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_REPEAT);
-  glTexImage2D(GL_TEXTURE_2D,0,3,image->width,image->height,0,GL_BGR,GL_UNSIGNED_BYTE,image->imageData);
 
- return texture;
+  glTexImage2D(GL_TEXTURE_2D,0,3,320,240,0,GL_BGR,GL_UNSIGNED_BYTE,image);
+}
+
+void UpdateIplToTexture(IplImage *image)
+{
+    glBindTexture(GL_TEXTURE_2D, texture);
+    glTexImage2D(GL_TEXTURE_2D,0,3,320,240,0,GL_RGB,GL_UNSIGNED_BYTE, image->imageData);
 }
 
 
@@ -99,7 +95,7 @@ int main()
     rightImagePort.open("/telepresence/rightEye:i"); // give the port a name
 
     cout << "Waiting for connections: mjpeg://gtw/telepresence/leftEye:o to /telepresence/leftEye:i   and   mjpeg://gtw/telepresence/rightEye:o to /telepresence/rightEye:i" << endl;
-    while( !Network::isConnected("mjpeg://gtw/telepresence/leftEye:o","/telepresence/leftEye:i") || !Network::isConnected("mjpeg://gtw/telepresence/rightEye:o","/telepresence/rightEye:i"))
+    while( !Network::isConnected("tcp+mjpeg://gtw/telepresence/leftEye:o","/telepresence/leftEye:i") || !Network::isConnected("tcp+mjpeg://gtw/telepresence/rightEye:o","/telepresence/rightEye:i"))
 	{}
 
     cout << "Connections ready: mjpeg://gtw/telepresence/leftEye:o to /telepresence/leftEye:i   and   mjpeg://gtw/telepresence/rightEye:o to /telepresence/rightEye:i" << endl;
@@ -109,9 +105,11 @@ int main()
         return 1;
     }
 
+    toggle_hmd_fullscreen();
+
     for(;;)
     {
-        SDL_Event ev;
+/*        SDL_Event ev;
         while(SDL_PollEvent(&ev))
         {
             if(handle_event(&ev) == -1)
@@ -119,10 +117,11 @@ int main()
                 goto done;
             }
         }
+*/
         display();
     }
 
-    done:
+//    done:
     cleanup();
 
     printf("...done\n");
@@ -185,6 +184,9 @@ int init(void)
     /* and create a single render target texture to encompass both eyes */
     fb_width = eyeres[0].w + eyeres[1].w;
     fb_height = eyeres[0].h > eyeres[1].h ? eyeres[0].h : eyeres[1].h;
+
+    fb_width = 320;
+    fb_height = 240;
 
     update_rtarg(fb_width, fb_height);
 
@@ -264,6 +266,10 @@ int init(void)
     glEnable(GL_NORMALIZE);
     glClearColor(0.1, 0.1, 0.1, 1);
 
+
+    GLubyte *texture_data = new GLubyte[320*240]();
+    InitializeIplToTexture(texture_data);
+    
     return 0;
 } 
 
@@ -286,8 +292,10 @@ void update_rtarg(int width, int height)
     glBindFramebuffer(GL_FRAMEBUFFER, fbo);
 
     /* calculate the next power of two in both dimensions and use that as a texture size */
-    fb_tex_width = next_pow2(width);
-    fb_tex_height = next_pow2(height);
+//    fb_tex_width = next_pow2(width);
+//    fb_tex_height = next_pow2(height);
+    fb_tex_width = 320;
+    fb_tex_height = 240;
 
     /* create and attach the texture that will be used as a color buffer */
     glBindTexture(GL_TEXTURE_2D, fb_tex);
@@ -436,13 +444,11 @@ void draw_scene(int eye_id)
 	else
 		eyeImage = leftImagePort.read(); // read an image
 
-    IplImage *cvEyeImage = cvCreateImage(cvSize(eyeImage->width(),eyeImage->height()),IPL_DEPTH_8U,3);
-    cvCvtColor((IplImage*)eyeImage->getIplImage(), cvEyeImage, CV_RGB2BGR);
-	cvFlip(cvEyeImage, cvEyeImage,0);
-	cvFlip(cvEyeImage, cvEyeImage,1);
+	IplImage *iplYarpImage = (IplImage*)eyeImage->getIplImage();
+	cvFlip(iplYarpImage, iplYarpImage,0);
+	cvFlip(iplYarpImage, iplYarpImage,1);
 
-    GLuint eyeTexture = ConvertIplToTexture(cvEyeImage);
-	glBindTexture(GL_TEXTURE_2D, eyeTexture);
+    UpdateIplToTexture(iplYarpImage);
 
     glEnable(GL_TEXTURE_2D);
     draw_box(30, 38, 30, -1.0);
