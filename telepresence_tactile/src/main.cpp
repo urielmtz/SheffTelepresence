@@ -71,7 +71,7 @@ class TactileModule: public RFModule
                 right_values[i] /= normalizer;
             }
 
-            myTxzy->setPWM(right_values[0],right_values[1],right_values[2],right_values[3],right_values[4],right_values[5],left_values[0],left_values[1],left_values[2],left_values[3],left_values[4],left_values[5]);
+            myTxzy->setPWM(left_values[3],left_values[2],left_values[1],left_values[0],left_values[4],left_values[5],right_values[3],right_values[2],right_values[1],right_values[0],right_values[4],right_values[5]);
 
             tempLeftValues->clear();
             tempRightValues->clear();

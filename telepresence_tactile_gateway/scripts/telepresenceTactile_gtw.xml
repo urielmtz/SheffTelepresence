@@ -19,7 +19,7 @@
 		<protocol>tcp</protocol>
  	</connection>
 	<connection>
-		<from>/icub/skin/left_hand_comp</from>
+		<from>/icub/skin/right_hand_comp</from>
 		<to>/gtw/telepresence/tactile/right:i</to>
 		<protocol>tcp</protocol>
  	</connection>
