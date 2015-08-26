@@ -142,7 +142,7 @@ int main( int argc, char **argv )
     ResourceFinder rf;
 
     rf.setVerbose(true);
-    rf.setDefaultContext("/home/uriel/Packages/SheffTelepresence/telepresence_neck_gateway/conf/");
+    rf.setDefaultContext("TactileModule_Gateway");
     rf.setDefaultConfigFile("config.ini");
     rf.configure(argc,argv);
 

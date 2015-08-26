@@ -20,6 +20,7 @@
 #include <yarp/os/Time.h>
 #include <yarp/os/all.h>
 #include <yarp/sig/all.h>
+#include <string>
 #include <txzy.h>
 
 using namespace yarp;
@@ -40,6 +41,13 @@ class TactileModule: public RFModule
         double *right_values = NULL;
         int taxelsRanges[2][6];
         int normalizer;
+
+        string networkType;
+        string portName;
+        int baudRate;
+        string parity;
+        int dataBits;
+        int stopBit;
 
     public:
         TactileModule(){}
@@ -81,7 +89,30 @@ class TactileModule: public RFModule
 
         bool configure(ResourceFinder &rf)
         {
-            myTxzy = new Txzy("/dev/ttyACM0",9600,"none",8,1);
+            Property config;
+            config.fromConfigFile(rf.findFile("from").c_str());
+
+            Bottle &networkSettings = config.findGroup("network_settings");
+            networkType = networkSettings.find("network_type").asString();
+
+            Bottle &communicationSettings = config.findGroup("communication_settings");
+            portName = communicationSettings.find("portname").asString();
+            baudRate = communicationSettings.find("baudrate").asInt();
+            parity = communicationSettings.find("parity").asString();
+            dataBits = communicationSettings.find("databits").asInt();
+            stopBit = communicationSettings.find("stopbit").asInt();
+
+            cout << "==== Communication settings ====" << endl;
+            cout << "portName: " << portName.c_str() << endl;
+            cout << "bauRate: " << baudRate << endl;
+            cout << "parity: " << parity.c_str() << endl;
+            cout << "dataBits: " << dataBits << endl;
+            cout << "stopBit: " << stopBit << endl;
+
+            cout << "==== Network settings ====" << endl;
+            cout << "networkType: " << networkType.c_str() << endl;
+
+            myTxzy = new Txzy((char *)portName.c_str(),baudRate,(char *)parity.c_str(),dataBits,stopBit);
 
             cout << "Opening port" << endl;
             myTxzy->openPort();
@@ -89,10 +120,23 @@ class TactileModule: public RFModule
             leftSensorValues.open("/telepresence/tactile/left:i");  // give the port a name
             rightSensorValues.open("/telepresence/tactile/right:i");  // give the port a name
 
-            cout << "Waiting for connections: /gtw/telepresence/tactile/left:o -> /telepresence/tactile/left:i   and   /gtw/telepresence/tactile/right:o -> /telepresence/tactile/right:i" << endl;
-            while( !Network::isConnected("/gtw/telepresence/tactile/left:o", "/telepresence/tactile/left:i") || !Network::isConnected("/gtw/telepresence/tactile/right:o", "/telepresence/tactile/right:i") )
-            {}
-            cout << "Connections ready: /gtw/telepresence/tactile/left:o -> /telepresence/tactile/left:i   and   /gtw/telepresence/tactile/right:o -> /telepresence/tactile/right:i" << endl;
+            if( networkType.compare("local") == 0 )
+            {
+                cout << "Waiting for connections: /icub/skin/left_hand_comp -> /telepresence/tactile/left:i   and   /icub/skin/right_hand_comp -> /telepresence/tactile/right:i" << endl;
+                while( !Network::isConnected("/icub/skin/left_hand_comp", "/telepresence/tactile/left:i") || !Network::isConnected("/icub/skin/right_hand_comp", "/telepresence/tactile/right:i") )
+                {}
+                cout << "Connections ready" << endl;                
+            }
+            else if( networkType.compare("remote") == 0 )
+            {
+                cout << "Waiting for connections: /gtw/telepresence/tactile/left:o -> /telepresence/tactile/left:i   and   /gtw/telepresence/tactile/right:o -> /telepresence/tactile/right:i" << endl;
+               while( !Network::isConnected("/gtw/telepresence/tactile/left:o", "/telepresence/tactile/left:i") || !Network::isConnected("/gtw/telepresence/tactile/right:o", "/telepresence/tactile/right:i") )
+               {}
+               cout << "Connections ready" << endl;
+            }
+            else
+                cout << "Error network type" << endl;
+
 
             taxelsPerHand = 6;
             numOfHands = 2;
@@ -121,8 +165,16 @@ class TactileModule: public RFModule
         {
             myTxzy->setPWM(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
-            Network::disconnect("/gtw/telepresence/tactile/left:o", "/telepresence/tactile/left:i");
-            Network::disconnect("/gtw/telepresence/tactile/right:o", "/telepresence/tactile/right:i");
+            if( networkType.compare("local") == 0 )
+            {
+                Network::disconnect("/icub/skin/left_hand_comp", "/telepresence/tactile/left:i");
+                Network::disconnect("/icub/skin/right_hand_comp", "/telepresence/tactile/right:i");
+            }
+            else if( networkType.compare("remote") == 0 )
+            {
+                Network::disconnect("/gtw/telepresence/tactile/left:o", "/telepresence/tactile/left:i");
+                Network::disconnect("/gtw/telepresence/tactile/right:o", "/telepresence/tactile/right:i");
+            }
 
             leftSensorValues.close();  // give the port a name
             rightSensorValues.close();  // give the port a name
