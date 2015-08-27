@@ -27,7 +27,8 @@ class OculusModule: public RFModule
         ovrHmd hmd;
         bool OculusDeviceReady;
 
-		BufferedPort<Bottle> output;
+		BufferedPort<Bottle> neckOutputPort;
+		BufferedPort<Bottle> neckConfOutputPort;
 
 		int nsample;
         float yaw;
@@ -37,6 +38,9 @@ class OculusModule: public RFModule
 
         float calibrationValue;
         bool calibrate;
+
+        string networkType;
+
     public:
         OculusModule()
         {
@@ -87,13 +91,13 @@ class OculusModule: public RFModule
                     cout << "POSE Euler [yaw,pitch,roll]: " << yaw << " " << eyePitch << " " << eyeRoll << endl;
 
                     nsample = 0;
-                    Bottle &bot = output.prepare();
+                    Bottle &bot = neckOutputPort.prepare();
                     bot.clear();
                     bot.addString("abs");
                     bot.addDouble(yaw*-180);		// (y) yaw in oculus which is x in icub
                     bot.addDouble(eyePitch*180);	// (x) pitch in oculus which is y in icub
                     bot.addDouble(0);
-                    output.write();
+                    neckOutputPort.write();
                 }
             }
 
@@ -102,20 +106,72 @@ class OculusModule: public RFModule
 
         bool configure(ResourceFinder &rf)
         {
-			output.open("/telepresence/neck:o");
-			
+            Property config;
+            config.fromConfigFile(rf.findFile("from").c_str());
+
+            Bottle &networkSettings = config.findGroup("network_settings");
+            networkType = networkSettings.find("network_type").asString();
+
+            cout << "==== Network settings ====" << endl;
+            cout << "networkType: " << networkType.c_str() << endl;
+
+			neckOutputPort.open("/telepresence/neck:o");
+
+            if( networkType.compare("local") == 0 )
+            {
+                neckConfOutputPort.open("/telepresence/neckconf:o");
+
+                cout << "Waiting for gateway connections: /telepresence/neckconf:o -> /iKinGazeCtrl/rpc" << endl;
+                while( !Network::isConnected("/telepresence/neckconf:o", "/iKinGazeCtrl/rpc") )
+                {}
+                cout << "Connections ready" << endl;                
+
+                Bottle &bot = neckConfOutputPort.prepare();
+                bot.clear();
+                bot.addString("bind");
+                bot.addString("roll");
+                bot.addDouble(-0.01);
+                bot.addDouble(0.01);
+                neckConfOutputPort.write();
+
+
+                cout << "Waiting for connections: /telepresence/neck:o   and   /iKinGazeCtrl/angles:i" << endl;
+                while( !Network::isConnected("/telepresence/neck:o", "/iKinGazeCtrl/angles:i") )
+                {}
+                cout << "Connections ready" << endl;                
+
+            }
+            else if( networkType.compare("remote") == 0 )
+            {
+                cout << "Waiting for connections: /telepresence/neck:o   and   /gtw/telepresence/neck:o" << endl;
+                while( !Network::isConnected("/telepresence/neck:o", "/gtw/telepresence/neck:o") )
+                {}
+                cout << "Connections ready" << endl;                
+	        }		
+            else
+                cout << "Error network type" << endl;
+
             return true;
         }
 
         bool interruptModule()
         {
-            Network::disconnect("/telepresence/neck:o","/gtw/telepresence/neck:o");
+            if( networkType.compare("local") == 0 )
+            {
+                Network::disconnect("/telepresence/neckconf:o","/iKinGazeCtrl/rpc");
+                Network::disconnect("/telepresence/neck:o","/iKinGazeCtrl/angles:i");
+            }
+            else if( networkType.compare("remote") == 0 )
+            {
+                Network::disconnect("/telepresence/neck:o","/gtw/telepresence/neck:o");
+            }            
 
             // Do something with the HMD.
             //ovrHmd_Destroy(hmd);
             ovr_Shutdown();
 
-			output.close();
+			neckOutputPort.close();
+			neckConfOutputPort.close();
 
             return true;
         }
@@ -180,7 +236,7 @@ int main(int argc, char **argv)
 
     ResourceFinder rf;
     rf.setVerbose(true);
-    rf.setDefaultContext("oculusRiftModule");
+    rf.setDefaultContext("NeckModule");
     rf.setDefaultConfigFile("config.ini");
     rf.configure(argc,argv);
     

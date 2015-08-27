@@ -138,7 +138,7 @@ int main( int argc, char **argv )
     ResourceFinder rf;
 
     rf.setVerbose(true);
-    rf.setDefaultContext("/home/icub/SheffTelepresence/telepresence_neck_gateway/conf/");
+    rf.setDefaultContext("NeckModule_Gateway");
     rf.setDefaultConfigFile("config.ini");
     rf.configure("SHEFFTELEPRESENCE_ROOT",argc,argv);
 
