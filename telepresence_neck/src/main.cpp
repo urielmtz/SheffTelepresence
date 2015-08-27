@@ -55,9 +55,6 @@ class OculusModule: public RFModule
 
         bool updateModule()
         {
-            cout << "Waiting for device..." << endl;
-            OculusDeviceReady = Initialization();
-
             if( OculusDeviceReady )
             {
                 // Get more details about the HMD.
@@ -106,6 +103,12 @@ class OculusModule: public RFModule
 
         bool configure(ResourceFinder &rf)
         {
+            cout << "Waiting for device..." << endl;
+            do
+            {
+                OculusDeviceReady = Initialization();
+            }while( OculusDeviceReady != true );
+
             Property config;
             config.fromConfigFile(rf.findFile("from").c_str());
 
