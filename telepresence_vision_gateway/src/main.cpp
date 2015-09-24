@@ -38,8 +38,8 @@ class TelepresenceVision_gtw: public RFModule
         bool configure(ResourceFinder &rf)
         {
             Property config;
-            config.fromConfigFile(rf.getContext() + "config.ini");
-//            config.fromConfigFile(rf.findFile("from").c_str());
+//            config.fromConfigFile(rf.getContext() + "config.ini");
+            config.fromConfigFile(rf.findFile("from").c_str());
 
             Bottle &bGeneral = config.findGroup("host_computer");
 
@@ -49,22 +49,22 @@ class TelepresenceVision_gtw: public RFModule
             gtw_leftEyeInput = gtw_leftEyeInput.addName("/gtw/telepresence/leftEye:i");
             gtw_leftEyeInput = gtw_leftEyeInput.addCarrier("tcp");
             gtw_leftEyeInput = gtw_leftEyeInput.addHost(ip_address);
-            gtw_leftEyeInput = gtw_leftEyeInput.addPort(80009);
+            gtw_leftEyeInput = gtw_leftEyeInput.addPort(80010);
 
             gtw_rightEyeInput = gtw_rightEyeInput.addName("/gtw/telepresence/rightEye:i");
             gtw_rightEyeInput = gtw_rightEyeInput.addCarrier("tcp");
             gtw_rightEyeInput = gtw_rightEyeInput.addHost(ip_address);
-            gtw_rightEyeInput = gtw_rightEyeInput.addPort(80010);
+            gtw_rightEyeInput = gtw_rightEyeInput.addPort(80011);
 
             gtw_leftEyeOutput = gtw_leftEyeOutput.addName("/gtw/telepresence/leftEye:o");
             gtw_leftEyeOutput = gtw_leftEyeOutput.addCarrier("tcp");
             gtw_leftEyeOutput = gtw_leftEyeOutput.addHost(ip_address);
-            gtw_leftEyeOutput = gtw_leftEyeOutput.addPort(80011);
+            gtw_leftEyeOutput = gtw_leftEyeOutput.addPort(80012);
 
             gtw_rightEyeOutput = gtw_rightEyeOutput.addName("/gtw/telepresence/rightEye:o");
             gtw_rightEyeOutput = gtw_rightEyeOutput.addCarrier("tcp");
             gtw_rightEyeOutput = gtw_rightEyeOutput.addHost(ip_address);
-            gtw_rightEyeOutput = gtw_rightEyeOutput.addPort(80012);
+            gtw_rightEyeOutput = gtw_rightEyeOutput.addPort(80013);
 
 
             Network::registerContact(gtw_leftEyeInput);
@@ -79,11 +79,11 @@ class TelepresenceVision_gtw: public RFModule
             gtw_rightImageOutputPort.open(gtw_rightEyeOutput, true); // give the port a name
 
 
-            cout << "Waiting for connections: mjpeg://icub/cam/left to /gtw/telepresence/leftEye:i   and   mjpeg://icub/cam/right to /gtw/telepresence/rightEye:i" << endl;
-            while( !Network::isConnected("mjpeg://icub/cam/left", "/gtw/telepresence/leftEye:i") || !Network::isConnected("mjpeg://icub/cam/right", "/gtw/telepresence/rightEye:i") )
+            cout << "Waiting for connections: udp+mjpeg://icub/cam/left to /gtw/telepresence/leftEye:i   and   udp+mjpeg://icub/cam/right to /gtw/telepresence/rightEye:i" << endl;
+            while( !Network::isConnected("udp+mjpeg://icub/cam/left", "/gtw/telepresence/leftEye:i") || !Network::isConnected("udp+mjpeg://icub/cam/right", "/gtw/telepresence/rightEye:i") )
             {}
 
-            cout << "Connections ready: mjpeg://icub/cam/left to /gtw/telepresence/leftEye:i   and   mjpeg://icub/cam/right to /gtw/telepresence/rightEye:i" << endl;
+            cout << "Connections ready" << endl;
 
             return true;
         }
@@ -139,9 +139,9 @@ int main( int argc, char **argv )
     ResourceFinder rf;
 
     rf.setVerbose(true);
-    rf.setDefaultContext("/home/icub/SheffTelepresence/telepresence_vision_gateway/conf/");
-    rf.setDefaultConfigFile("config.ini");
-    rf.configure("SHEFFTELEPRESENCE_ROOT",argc,argv);
+    rf.setDefaultContext("VisionModule_Gateway");
+    rf.setDefaultConfigFile("VisionModule_Gateway.ini");
+    rf.configure(argc,argv);
 
     TelepresenceVision_gtw mod;
 

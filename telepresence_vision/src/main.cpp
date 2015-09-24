@@ -13,6 +13,8 @@
 #include <yarp/sig/all.h>
 #include <SDL2/SDL.h>
 #include <GL/glew.h>
+#include <fstream>
+#include <string>
 
 #ifdef WIN32
     #define OVR_OS_WIN32
@@ -88,17 +90,68 @@ void UpdateIplToTexture(IplImage *image)
 }
 
 
-int main()
+int main(int argc, char **argv)
 {
     Network yarp; // set up yarp
+
+    string line;
+    string networkType;
+
+    if( argc < 3 )
+    {
+        cout << "ERROR: Missing arguments" << endl;
+        return false;
+    }
+
+    string param = argv[1];
+    string fileName = argv[2];
+
+    if( param.compare("--from") == 1 )
+    {
+        cout << "ERROR: [--from] parameter missing" << endl;
+        return false;
+    }    
+
+
+    ifstream configFile(fileName.c_str());
+
+    if(configFile.is_open())
+    {
+        while( getline(configFile, line) )
+        {
+            if( line.compare("[network_settings]") == 0 )
+            {
+                getline(configFile, line);
+                networkType = line;                
+            }
+        }
+        configFile.close();
+    }
+
+    cout << "Network type: " << networkType << endl;
+
     leftImagePort.open("/telepresence/leftEye:i"); // give the port a name
     rightImagePort.open("/telepresence/rightEye:i"); // give the port a name
 
-    cout << "Waiting for connections: mjpeg://gtw/telepresence/leftEye:o to /telepresence/leftEye:i   and   mjpeg://gtw/telepresence/rightEye:o to /telepresence/rightEye:i" << endl;
-    while( !Network::isConnected("tcp+mjpeg://gtw/telepresence/leftEye:o","/telepresence/leftEye:i") || !Network::isConnected("tcp+mjpeg://gtw/telepresence/rightEye:o","/telepresence/rightEye:i"))
-	{}
 
-    cout << "Connections ready: mjpeg://gtw/telepresence/leftEye:o to /telepresence/leftEye:i   and   mjpeg://gtw/telepresence/rightEye:o to /telepresence/rightEye:i" << endl;
+    if( networkType.compare("local") == 0 )
+    {
+        cout << "Waiting for connections: udp+mjpeg://icub/cam/left to /telepresence/leftEye:i   and   udp+mjpeg://icub/cam/right to /telepresence/rightEye:i" << endl;
+
+        while( !Network::isConnected("udp+mjpeg://icub/cam/left","/telepresence/leftEye:i") || !Network::isConnected("udp+mjpeg://icub/cam/right","/telepresence/rightEye:i"))
+    	{}
+        cout << "Connections ready" << endl;
+    }
+    else if( networkType.compare("remote") == 0 )
+    {        
+        cout << "Waiting for connections: udp+mjpeg://gtw/telepresence/leftEye:o to /telepresence/leftEye:i   and   udp+mjpeg://gtw/telepresence/rightEye:o to /telepresence/rightEye:i" << endl;
+
+        while( !Network::isConnected("udp+mjpeg://gtw/telepresence/leftEye:o","/telepresence/leftEye:i") || !Network::isConnected("udp+mjpeg://gtw/telepresence/rightEye:o","/telepresence/rightEye:i"))
+    	{}
+
+        cout << "Connections ready" << endl;
+    }
+    
 
     if(init() == -1)
     {
