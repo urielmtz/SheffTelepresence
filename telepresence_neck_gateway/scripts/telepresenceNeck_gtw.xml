@@ -5,23 +5,47 @@
 //-->
 
 <application>
-	<name>Telepresence_Neck_GTW</name>
+	<name>Telepresence_Neck_Gtw</name>
 	<module>
-		<name>telepresenceNeck_gtw</name>
+		<name>telepresenceNeck</name>
 		<parameters></parameters>
         <node>localhost</node>
         <stdio></stdio>
 	</module>
 
 	<connection>
-		<from>/gtw/telepresence/neck:o</from>
+		<from>/telepresence/neckconf:o</from>
+		<to>/iKinGazeCtrl/rpc</to>
+		<protocol>tcp</protocol>
+ 	</connection>
+
+	<connection>
+		<from>/telepresence/neck:o</from>
 		<to>/iKinGazeCtrl/angles:i</to>
 		<protocol>tcp</protocol>
  	</connection>
+
+	<connection>
+		<from>/telepresence/neckconf:o</from>
+		<to>/gtw/telepresence/neckconf:i</to>
+		<protocol>tcp</protocol>
+ 	</connection>
+
+	<connection>
+		<from>/telepresence/neck:o</from>
+		<to>/gtw/telepresence/neck:i</to>
+		<protocol>tcp</protocol>
+ 	</connection>
+
 	<connection>
 		<from>/gtw/telepresence/neckconf:o</from>
 		<to>/iKinGazeCtrl/rpc</to>
 		<protocol>tcp</protocol>
  	</connection>
 
+	<connection>
+		<from>/gtw/telepresence/neck:o</from>
+		<to>/iKinGazeCtrl/angles:i</to>
+		<protocol>tcp</protocol>
+ 	</connection>
 </application>

@@ -58,7 +58,7 @@ class OculusModule: public RFModule
             if( OculusDeviceReady )
             {
                 // Get more details about the HMD.
-                ovrSizei resolution = hmd->Resolution;
+                //ovrSizei resolution = hmd->Resolution;    // maybe not needed for now
                 // Start the sensor which provides the Rift’s pose and motion.
                 ovrHmd_ConfigureTracking(hmd, ovrTrackingCap_Orientation | ovrTrackingCap_MagYawCorrection | ovrTrackingCap_Position, 0);
                 // Query the HMD for the current tracking state.
@@ -119,24 +119,15 @@ class OculusModule: public RFModule
             cout << "networkType: " << networkType.c_str() << endl;
 
 			neckOutputPort.open("/telepresence/neck:o");
+            neckConfOutputPort.open("/telepresence/neckconf:o");
 
             if( networkType.compare("local") == 0 )
             {
-                neckConfOutputPort.open("/telepresence/neckconf:o");
 
                 cout << "Waiting for gateway connections: /telepresence/neckconf:o -> /iKinGazeCtrl/rpc" << endl;
                 while( !Network::isConnected("/telepresence/neckconf:o", "/iKinGazeCtrl/rpc") )
                 {}
                 cout << "Connections ready" << endl;                
-
-                Bottle &bot = neckConfOutputPort.prepare();
-                bot.clear();
-                bot.addString("bind");
-                bot.addString("roll");
-                bot.addDouble(-0.01);
-                bot.addDouble(0.01);
-                neckConfOutputPort.write();
-
 
                 cout << "Waiting for connections: /telepresence/neck:o   and   /iKinGazeCtrl/angles:i" << endl;
                 while( !Network::isConnected("/telepresence/neck:o", "/iKinGazeCtrl/angles:i") )
@@ -146,13 +137,41 @@ class OculusModule: public RFModule
             }
             else if( networkType.compare("remote") == 0 )
             {
-                cout << "Waiting for connections: /telepresence/neck:o   and   /gtw/telepresence/neck:o" << endl;
-                while( !Network::isConnected("/telepresence/neck:o", "/gtw/telepresence/neck:o") )
+                cout << "Waiting for port /gtw/telepresence/neckconf:i to be opened" << endl;
+                while( !Network::exists("/gtw/telepresence/neckconf:i") )
+                {}
+                cout << "Port /gtw/telepresence/neckconf:i ready" << endl;
+
+                cout << "Waiting for port /gtw/telepresence/neck:i to be opened" << endl;
+                while( !Network::exists("/gtw/telepresence/neck:i") )
+                {}
+                cout << "Port /gtw/telepresence/neck:i ready" << endl;
+
+                cout << "Waiting for connections: /telepresence/neckconf:o   and   /gtw/telepresence/neckconf:i" << endl;
+                while( !Network::isConnected("/telepresence/neckconf:o", "/gtw/telepresence/neckconf:i") )
+                {}
+                cout << "Connections ready" << endl;                
+
+                cout << "Waiting for connections: /telepresence/neck:o   and   /gtw/telepresence/neck:i" << endl;
+                while( !Network::isConnected("/telepresence/neck:o", "/gtw/telepresence/neck:i") )
                 {}
                 cout << "Connections ready" << endl;                
 	        }		
             else
+            {
                 cout << "Error network type" << endl;
+                return false;
+            }
+
+
+            Bottle &bot = neckConfOutputPort.prepare();
+            bot.clear();
+            bot.addString("bind");
+            bot.addString("roll");
+            bot.addDouble(-0.01);
+            bot.addDouble(0.01);
+            neckConfOutputPort.write();
+
 
             return true;
         }
@@ -166,7 +185,8 @@ class OculusModule: public RFModule
             }
             else if( networkType.compare("remote") == 0 )
             {
-                Network::disconnect("/telepresence/neck:o","/gtw/telepresence/neck:o");
+                Network::disconnect("/telepresence/neckconf:o","/gtw/telepresence/neckconf:i");
+                Network::disconnect("/telepresence/neck:o","/gtw/telepresence/neck:i");
             }            
 
             // Do something with the HMD.
@@ -240,7 +260,7 @@ int main(int argc, char **argv)
     ResourceFinder rf;
     rf.setVerbose(true);
     rf.setDefaultContext("NeckModule");
-    rf.setDefaultConfigFile("config.ini");
+    rf.setDefaultConfigFile("NeckModule.ini");
     rf.configure(argc,argv);
     
     OculusModule mod;

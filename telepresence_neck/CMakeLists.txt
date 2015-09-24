@@ -15,7 +15,7 @@ file(GLOB folder_header include/*.h)
 source_group("Source Files" FILES ${folder_source})
 source_group("Header Files" FILES ${folder_header})
 
-set(CMAKE_CXX_FLAGS "-Wall -I$ENV{OCULUS_ROOT} -lovr -lGL -lX11 -lXrandr")
+set(CMAKE_CXX_FLAGS "-Wall -I$ENV{OCULUS_ROOT} -lovr -lpthread -lrt -lGL -lX11 -lXrandr")
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include ${YARP_INCLUDE_DIRS})
 add_executable(${PROJECTNAME} ${folder_source} ${folder_header})
