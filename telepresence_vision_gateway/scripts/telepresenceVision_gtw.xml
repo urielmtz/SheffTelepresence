@@ -5,9 +5,15 @@
 //-->
 
 <application>
-	<name>Telepresence_Vision_GTW</name>
+	<name>Telepresence_Vision</name>
 	<module>
-		<name>telepresenceVision_gtw</name>
+		<name>oculusd</name>
+		<parameters></parameters>
+        <node>localhost</node>
+        <stdio></stdio>
+	</module>
+	<module>
+		<name>telepresenceVision</name>
 		<parameters></parameters>
         <node>localhost</node>
         <stdio></stdio>
@@ -15,12 +21,26 @@
 
 	<connection>
 		<from>/icub/cam/left</from>
-		<to>/gtw/telepresence/leftEye:i</to>
-		<protocol>tcp</protocol>
+		<to>/telepresence/leftEye:i</to>
+		<protocol>udp+mjpeg</protocol>
  	</connection>
+
 	<connection>
 		<from>/icub/cam/right</from>
-		<to>/gtw/telepresence/rightEye:i</to>
-		<protocol>tcp</protocol>
+		<to>/telepresence/rightEye:i</to>
+		<protocol>udp+mjpeg</protocol>
  	</connection>
+
+	<connection>
+		<from>/gtw/telepresence/leftEye:o</from>
+		<to>/telepresence/leftEye:i</to>
+		<protocol>udp+mjpeg</protocol>
+ 	</connection>
+
+	<connection>
+		<from>/gtw/telepresence/rightEye:o</from>
+		<to>/telepresence/rightEye:i</to>
+		<protocol>udp+mjpeg</protocol>
+ 	</connection>
+
 </application>

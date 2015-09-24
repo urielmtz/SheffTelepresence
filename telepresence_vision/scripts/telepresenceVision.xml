@@ -20,15 +20,27 @@
 	</module>
 
 	<connection>
+		<from>/icub/cam/left</from>
+		<to>/telepresence/leftEye:i</to>
+		<protocol>udp+mjpeg</protocol>
+ 	</connection>
+
+	<connection>
+		<from>/icub/cam/right</from>
+		<to>/telepresence/rightEye:i</to>
+		<protocol>udp+mjpeg</protocol>
+ 	</connection>
+
+	<connection>
 		<from>/gtw/telepresence/leftEye:o</from>
 		<to>/telepresence/leftEye:i</to>
-		<protocol>tcp+mjpeg</protocol>
+		<protocol>udp+mjpeg</protocol>
  	</connection>
 
 	<connection>
 		<from>/gtw/telepresence/rightEye:o</from>
 		<to>/telepresence/rightEye:i</to>
-		<protocol>tcp+mjpeg</protocol>
+		<protocol>udp+mjpeg</protocol>
  	</connection>
 
 </application>
