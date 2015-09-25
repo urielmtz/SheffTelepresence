@@ -80,7 +80,7 @@ class TelepresenceVision_gtw: public RFModule
 
 
             cout << "Waiting for connections: udp+mjpeg://icub/cam/left to /gtw/telepresence/leftEye:i   and   udp+mjpeg://icub/cam/right to /gtw/telepresence/rightEye:i" << endl;
-            while( !Network::isConnected("udp+mjpeg://icub/cam/left", "/gtw/telepresence/leftEye:i") || !Network::isConnected("udp+mjpeg://icub/cam/right", "/gtw/telepresence/rightEye:i") )
+            while( !Network::isConnected("/icub/cam/left", "/gtw/telepresence/leftEye:i") || !Network::isConnected("/icub/cam/right", "/gtw/telepresence/rightEye:i") )
             {}
 
             cout << "Connections ready" << endl;
