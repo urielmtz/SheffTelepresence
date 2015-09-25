@@ -80,13 +80,13 @@ void InitializeIplToTexture(GLubyte *image)
   glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_REPEAT);
   glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_REPEAT);
 
-  glTexImage2D(GL_TEXTURE_2D,0,3,320,240,0,GL_BGR,GL_UNSIGNED_BYTE,image);
+  glTexImage2D(GL_TEXTURE_2D,0,2,640,480,0,GL_BGR,GL_UNSIGNED_BYTE,image);
 }
 
 void UpdateIplToTexture(IplImage *image)
 {
     glBindTexture(GL_TEXTURE_2D, texture);
-    glTexImage2D(GL_TEXTURE_2D,0,3,320,240,0,GL_RGB,GL_UNSIGNED_BYTE, image->imageData);
+    glTexImage2D(GL_TEXTURE_2D,0,3,640,480,0,GL_RGB,GL_UNSIGNED_BYTE, image->imageData);
 }
 
 
@@ -138,8 +138,10 @@ int main(int argc, char **argv)
     {
         cout << "Waiting for connections: udp+mjpeg://icub/cam/left to /telepresence/leftEye:i   and   udp+mjpeg://icub/cam/right to /telepresence/rightEye:i" << endl;
 
-        while( !Network::isConnected("udp+mjpeg://icub/cam/left","/telepresence/leftEye:i") || !Network::isConnected("udp+mjpeg://icub/cam/right","/telepresence/rightEye:i"))
+        while( !Network::isConnected("/icub/cam/left","/telepresence/leftEye:i") || !Network::isConnected("/icub/cam/right","/telepresence/rightEye:i"))
     	{}
+//        while( !Network::isConnected("udp+mjpeg://icub/cam/left","/telepresence/leftEye:i") || !Network::isConnected("udp+mjpeg://icub/cam/right","/telepresence/rightEye:i"))
+//    	{}
         cout << "Connections ready" << endl;
     }
     else if( networkType.compare("remote") == 0 )
@@ -238,8 +240,8 @@ int init(void)
     fb_width = eyeres[0].w + eyeres[1].w;
     fb_height = eyeres[0].h > eyeres[1].h ? eyeres[0].h : eyeres[1].h;
 
-    fb_width = 320;
-    fb_height = 240;
+    fb_width = 640;
+    fb_height = 480;
 
     update_rtarg(fb_width, fb_height);
 
@@ -320,7 +322,7 @@ int init(void)
     glClearColor(0.1, 0.1, 0.1, 1);
 
 
-    GLubyte *texture_data = new GLubyte[320*240]();
+    GLubyte *texture_data = new GLubyte[640*480]();
     InitializeIplToTexture(texture_data);
     
     return 0;
@@ -347,8 +349,8 @@ void update_rtarg(int width, int height)
     /* calculate the next power of two in both dimensions and use that as a texture size */
 //    fb_tex_width = next_pow2(width);
 //    fb_tex_height = next_pow2(height);
-    fb_tex_width = 320;
-    fb_tex_height = 240;
+    fb_tex_width = 640;
+    fb_tex_height = 480;
 
     /* create and attach the texture that will be used as a color buffer */
     glBindTexture(GL_TEXTURE_2D, fb_tex);

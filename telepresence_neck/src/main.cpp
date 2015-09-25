@@ -55,10 +55,10 @@ class OculusModule: public RFModule
 
         bool updateModule()
         {
-            if( OculusDeviceReady )
+           if( OculusDeviceReady )
             {
                 // Get more details about the HMD.
-                //ovrSizei resolution = hmd->Resolution;    // maybe not needed for now
+                ovrSizei resolution = hmd->Resolution;    // maybe not needed for now
                 // Start the sensor which provides the Rift’s pose and motion.
                 ovrHmd_ConfigureTracking(hmd, ovrTrackingCap_Orientation | ovrTrackingCap_MagYawCorrection | ovrTrackingCap_Position, 0);
                 // Query the HMD for the current tracking state.
@@ -85,14 +85,16 @@ class OculusModule: public RFModule
 
                     cout << "POSE [y,x,z => yaw,pitch,roll]: " << yaw << " " << eyePitch << " " << eyeRoll << endl;
                     toEuler(&yaw, &eyePitch, &eyeRoll, wParam);
+                    yaw = yaw*180/M_PI;
+                    eyePitch = eyePitch*(-360);
                     cout << "POSE Euler [yaw,pitch,roll]: " << yaw << " " << eyePitch << " " << eyeRoll << endl;
 
                     nsample = 0;
                     Bottle &bot = neckOutputPort.prepare();
                     bot.clear();
                     bot.addString("abs");
-                    bot.addDouble(yaw*-180);		// (y) yaw in oculus which is x in icub
-                    bot.addDouble(eyePitch*180);	// (x) pitch in oculus which is y in icub
+                    bot.addDouble(yaw);		// (y) yaw in oculus which is x in icub
+                    bot.addDouble(eyePitch);	// (x) pitch in oculus which is y in icub
                     bot.addDouble(0);
                     neckOutputPort.write();
                 }
@@ -118,12 +120,11 @@ class OculusModule: public RFModule
             cout << "==== Network settings ====" << endl;
             cout << "networkType: " << networkType.c_str() << endl;
 
-			neckOutputPort.open("/telepresence/neck:o");
+            neckOutputPort.open("/telepresence/neck:o");
             neckConfOutputPort.open("/telepresence/neckconf:o");
 
             if( networkType.compare("local") == 0 )
             {
-
                 cout << "Waiting for gateway connections: /telepresence/neckconf:o -> /iKinGazeCtrl/rpc" << endl;
                 while( !Network::isConnected("/telepresence/neckconf:o", "/iKinGazeCtrl/rpc") )
                 {}
@@ -133,7 +134,6 @@ class OculusModule: public RFModule
                 while( !Network::isConnected("/telepresence/neck:o", "/iKinGazeCtrl/angles:i") )
                 {}
                 cout << "Connections ready" << endl;                
-
             }
             else if( networkType.compare("remote") == 0 )
             {
@@ -163,7 +163,6 @@ class OculusModule: public RFModule
                 return false;
             }
 
-
             Bottle &bot = neckConfOutputPort.prepare();
             bot.clear();
             bot.addString("bind");
@@ -172,6 +171,11 @@ class OculusModule: public RFModule
             bot.addDouble(0.01);
             neckConfOutputPort.write();
 
+            bot.clear();
+            bot.addString("bind");
+            bot.addString("eyes");
+            bot.addDouble(0.0);
+            neckConfOutputPort.write();
 
             return true;
         }
@@ -201,7 +205,7 @@ class OculusModule: public RFModule
 
         double getPeriod()
         {
-            return 0.03;
+            return 0.06;
         }
 
         bool Initialization()
