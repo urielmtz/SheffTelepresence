@@ -21,13 +21,13 @@
 
 	<connection>
 		<from>/icub/cam/left</from>
-		<to>/telepresence/leftEye:i</to>
+		<to>/gtw/telepresence/leftEye:i</to>
 		<protocol>udp+mjpeg+recv.bayer+method.nearest</protocol>
  	</connection>
 
 	<connection>
 		<from>/icub/cam/right</from>
-		<to>/telepresence/rightEye:i</to>
+		<to>/gtw/telepresence/rightEye:i</to>
 		<protocol>udp+mjpeg+recv.bayer+method.nearest</protocol>
  	</connection>
 
