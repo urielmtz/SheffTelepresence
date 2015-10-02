@@ -204,7 +204,7 @@ int main(int argc, char *argv[])
     ResourceFinder rf;
     rf.setVerbose(true);
     rf.setDefaultContext("TactileModule");
-    rf.setDefaultConfigFile("config.ini");
+    rf.setDefaultConfigFile("TactileModule.ini");
     rf.configure(argc,argv);
     
     TactileModule mod;

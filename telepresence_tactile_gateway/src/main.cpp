@@ -143,7 +143,7 @@ int main( int argc, char **argv )
 
     rf.setVerbose(true);
     rf.setDefaultContext("TactileModule_Gateway");
-    rf.setDefaultConfigFile("config.ini");
+    rf.setDefaultConfigFile("TactileModule_Gateway.ini");
     rf.configure(argc,argv);
 
     TelepresenceNeck_gtw mod;
