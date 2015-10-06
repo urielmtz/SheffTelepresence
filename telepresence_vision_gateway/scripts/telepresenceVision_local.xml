@@ -5,7 +5,7 @@
 //-->
 
 <application>
-	<name>Telepresence_Vision</name>
+	<name>Telepresence_Vision_Local</name>
 	<module>
 		<name>oculusd</name>
 		<parameters></parameters>
@@ -21,24 +21,12 @@
 
 	<connection>
 		<from>/icub/cam/left</from>
-		<to>/gtw/telepresence/leftEye:i</to>
-		<protocol>udp+mjpeg+recv.bayer+method.nearest</protocol>
- 	</connection>
-
-	<connection>
-		<from>/icub/cam/right</from>
-		<to>/gtw/telepresence/rightEye:i</to>
-		<protocol>udp+mjpeg+recv.bayer+method.nearest</protocol>
- 	</connection>
-
-	<connection>
-		<from>/gtw/telepresence/leftEye:o</from>
 		<to>/telepresence/leftEye:i</to>
 		<protocol>udp+mjpeg+recv.bayer+method.nearest</protocol>
  	</connection>
 
 	<connection>
-		<from>/gtw/telepresence/rightEye:o</from>
+		<from>/icub/cam/right</from>
 		<to>/telepresence/rightEye:i</to>
 		<protocol>udp+mjpeg+recv.bayer+method.nearest</protocol>
  	</connection>

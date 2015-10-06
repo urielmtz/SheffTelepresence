@@ -5,7 +5,7 @@
 //-->
 
 <application>
-	<name>Telepresence_Vision</name>
+	<name>Telepresence_Vision_Gateway</name>
 	<module>
 		<name>oculusd</name>
 		<parameters></parameters>

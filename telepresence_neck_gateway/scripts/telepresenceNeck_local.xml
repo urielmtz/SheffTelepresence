@@ -5,7 +5,7 @@
 //-->
 
 <application>
-	<name>Telepresence_Neck</name>
+	<name>Telepresence_Neck_Local</name>
 	<module>
 		<name>telepresenceNeck</name>
 		<parameters></parameters>
@@ -25,27 +25,4 @@
 		<protocol>tcp</protocol>
  	</connection>
 
-	<connection>
-		<from>/telepresence/neckconf:o</from>
-		<to>/gtw/telepresence/neckconf:i</to>
-		<protocol>tcp</protocol>
- 	</connection>
-
-	<connection>
-		<from>/telepresence/neck:o</from>
-		<to>/gtw/telepresence/neck:i</to>
-		<protocol>tcp</protocol>
- 	</connection>
-
-	<connection>
-		<from>/gtw/telepresence/neckconf:o</from>
-		<to>/iKinGazeCtrl/rpc</to>
-		<protocol>tcp</protocol>
- 	</connection>
-
-	<connection>
-		<from>/gtw/telepresence/neck:o</from>
-		<to>/iKinGazeCtrl/angles:i</to>
-		<protocol>tcp</protocol>
- 	</connection>
 </application>
