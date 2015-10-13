@@ -85,8 +85,8 @@ class OculusModule: public RFModule
 
                     cout << "POSE [y,x,z => yaw,pitch,roll]: " << yaw << " " << eyePitch << " " << eyeRoll << endl;
                     toEuler(&yaw, &eyePitch, &eyeRoll, wParam);
-                    yaw = yaw*180/M_PI;
-                    eyePitch = eyePitch*(-360);
+                    yaw = yaw*(-180/M_PI);
+                    eyePitch = eyePitch*(360);
                     cout << "POSE Euler [yaw,pitch,roll]: " << yaw << " " << eyePitch << " " << eyeRoll << endl;
 
                     nsample = 0;
@@ -171,11 +171,11 @@ class OculusModule: public RFModule
             bot.addDouble(0.01);
             neckConfOutputPort.write();
 
-            bot.clear();
-            bot.addString("bind");
-            bot.addString("eyes");
-            bot.addDouble(0.0);
-            neckConfOutputPort.write();
+            //bot.clear();
+            //bot.addString("bind");
+            //bot.addString("eyes");
+            //bot.addDouble(0.0);
+            //neckConfOutputPort.write();
 
             return true;
         }
