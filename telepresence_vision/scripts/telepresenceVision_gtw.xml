@@ -34,13 +34,13 @@
 	<connection>
 		<from>/gtw/telepresence/leftEye:o</from>
 		<to>/telepresence/leftEye:i</to>
-		<protocol>udp+mjpeg+recv.bayer+method.nearest</protocol>
+		<protocol></protocol>
  	</connection>
 
 	<connection>
 		<from>/gtw/telepresence/rightEye:o</from>
 		<to>/telepresence/rightEye:i</to>
-		<protocol>udp+mjpeg+recv.bayer+method.nearest</protocol>
+		<protocol></protocol>
  	</connection>
 
 </application>

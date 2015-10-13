@@ -140,8 +140,6 @@ int main(int argc, char **argv)
 
         while( !Network::isConnected("/icub/cam/left","/telepresence/leftEye:i") || !Network::isConnected("/icub/cam/right","/telepresence/rightEye:i"))
     	{}
-//        while( !Network::isConnected("udp+mjpeg://icub/cam/left","/telepresence/leftEye:i") || !Network::isConnected("udp+mjpeg://icub/cam/right","/telepresence/rightEye:i"))
-//    	{}
         cout << "Connections ready" << endl;
     }
     else if( networkType.compare("remote") == 0 )

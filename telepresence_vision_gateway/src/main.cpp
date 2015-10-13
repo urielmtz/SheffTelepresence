@@ -49,22 +49,22 @@ class TelepresenceVision_gtw: public RFModule
             gtw_leftEyeInput = gtw_leftEyeInput.addName("/gtw/telepresence/leftEye:i");
             gtw_leftEyeInput = gtw_leftEyeInput.addCarrier("tcp");
             gtw_leftEyeInput = gtw_leftEyeInput.addHost(ip_address);
-            gtw_leftEyeInput = gtw_leftEyeInput.addPort(80010);
+            gtw_leftEyeInput = gtw_leftEyeInput.addPort(80110);
 
             gtw_rightEyeInput = gtw_rightEyeInput.addName("/gtw/telepresence/rightEye:i");
             gtw_rightEyeInput = gtw_rightEyeInput.addCarrier("tcp");
             gtw_rightEyeInput = gtw_rightEyeInput.addHost(ip_address);
-            gtw_rightEyeInput = gtw_rightEyeInput.addPort(80011);
+            gtw_rightEyeInput = gtw_rightEyeInput.addPort(80111);
 
             gtw_leftEyeOutput = gtw_leftEyeOutput.addName("/gtw/telepresence/leftEye:o");
             gtw_leftEyeOutput = gtw_leftEyeOutput.addCarrier("tcp");
             gtw_leftEyeOutput = gtw_leftEyeOutput.addHost(ip_address);
-            gtw_leftEyeOutput = gtw_leftEyeOutput.addPort(80012);
+            gtw_leftEyeOutput = gtw_leftEyeOutput.addPort(80112);
 
             gtw_rightEyeOutput = gtw_rightEyeOutput.addName("/gtw/telepresence/rightEye:o");
             gtw_rightEyeOutput = gtw_rightEyeOutput.addCarrier("tcp");
             gtw_rightEyeOutput = gtw_rightEyeOutput.addHost(ip_address);
-            gtw_rightEyeOutput = gtw_rightEyeOutput.addPort(80013);
+            gtw_rightEyeOutput = gtw_rightEyeOutput.addPort(80113);
 
 
             Network::registerContact(gtw_leftEyeInput);
